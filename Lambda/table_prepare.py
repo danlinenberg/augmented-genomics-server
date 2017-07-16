@@ -10,8 +10,16 @@ def lambda_handler(event, context):
     dynamodb = boto3.resource('dynamodb')
     client = boto3.client('lambda')
     table = dynamodb.Table("VCF")
+    table_patient = dynamodb.Table("Patient") 
 
     try:
+        response_patient = table_patient.query(
+            KeyConditionExpression=Key("id").eq(int(key))
+        )
+        if(len(response_patient['Items'])==0):
+            return "No Patient Found"
+            
+            
         response = table.query(
             KeyConditionExpression=Key("id").eq(key)
         )
