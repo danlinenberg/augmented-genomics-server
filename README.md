@@ -12,13 +12,14 @@ Create an AWS account and follow these instructions:
 ### Cognito
   - Create a Federated Identity, and enable access to unauthenticated identities.
   - Create a new User Pool and add some users (username is the ID)
-  - Save the ARN of the Federated Identity (Under "Sample Code"->"Get AWS Credentials"). This will be the USER_POOL_ID we use on the client.
+  - Save the ARN of the Federated Identity (Under "Sample Code"->"Get AWS Credentials"). This will be the USER_POOL_ID we use on the client.
 ### DynamoDB
   - Create a table named "Patient" with hash key "id" (Number)
   - Create a table named "Doctor" with hash key "id" (Number)
   - Create a table named "GeneAverageScore" with hash key "Gene.refGene" (String)
   - Create a table named "GenesVIP" with hash key "Gene.refGene" (String)
   - Create a table named "VCF" with has key "id" (Number) and sort key "Gene.refGene" (String)
+  - Set the Write capacity for "VCF" table to 20 (all other tables can have 5)
   - Save the ARN of the 
   
 ### S3
