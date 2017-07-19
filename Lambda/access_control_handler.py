@@ -7,7 +7,7 @@ from  __builtin__ import any as b_any
 
 def lambda_handler(event, context):
     
-    id = event['Key']
+    id = int(event['Key'])
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table("Doctor")
     
@@ -15,5 +15,5 @@ def lambda_handler(event, context):
         response = table.get_item(Key={'id': id})
         return response['Item']['access']
     except Exception as e:
-        return 0
+        return 3
     

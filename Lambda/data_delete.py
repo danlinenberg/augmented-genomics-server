@@ -20,12 +20,6 @@ def lambda_handler(event, context):
     except Exception as e:
         return "No data exists"
 
-    # with table.batch_writer() as batch:
-    #     batch.delete_item(
-    #         Key={
-    #             'id': key
-    #         }
-    #     )    
     if(len(response['Items'])>0):
         for i in response['Items']:
             try:
@@ -40,5 +34,3 @@ def lambda_handler(event, context):
         return "Success"
     else:
         return "No data found for patient ID"
-        
-    

@@ -46,5 +46,4 @@ def lambda_handler(event, context):
         else:
             lst.append("ACCESS_DENIED")
     
-    print(lst)
-    return lst
+    return ','.join(lst)

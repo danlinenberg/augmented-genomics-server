@@ -16,7 +16,6 @@ def lambda_handler(event, context):
     dynamodb = boto3.resource('dynamodb')
     client = boto3.client('lambda')
 
-    global dct
     dct = dict()
     lst = list()
     for p1 in key.split("&"):
@@ -28,6 +27,15 @@ def lambda_handler(event, context):
             dct[lst[0]]=lst[1]
         except Exception as e:
             pass
+    
+    doctor = dct['doctor']
+    is_super_doctor = client.invoke(
+        FunctionName = 'access_control_handler',
+        InvocationType='RequestResponse',
+        Payload=json.dumps({"Key": doctor})
+    )
+    if(int(is_super_doctor['Payload'].read())==0):
+        return get_vcf(client, str(json.dumps(event)))
 
     table_patient = dynamodb.Table("Patient")
     table_doctor = dynamodb.Table("Doctor")
@@ -42,24 +50,6 @@ def lambda_handler(event, context):
     except Exception as e:
         return e
 
-
-    #super-doctor
-    try:
-        response_doctor = table_doctor.get_item(
-            Key={
-                'id': int(dct["doctor"])
-            }
-        )
-        item_doctor = response_doctor['Item']
-        if(item_doctor["access"] == 3):
-            pl = dict()
-            pl['Key'] = str(item_patient['id'])
-            queryName = dct['query']
-            return get_vcf(client, queryName, json.dumps(pl))
-    except Exception as e:
-        print(e)
-    
-
     for k,v in dct.items():
         if(k in item_patient):
             if(str(dct[k])!=str(item_patient[k])):
@@ -70,21 +60,17 @@ def lambda_handler(event, context):
         elif(k == "query"):
             queryName = v
             
-    pl = dict()
-    pl['Key'] = str(item_patient['id'])    
-    
-    return get_vcf(client, queryName, json.dumps(pl))
+    return get_vcf(client, str(json.dumps(event)))
 
 
-def get_vcf(client, functionName, payload):
+def get_vcf(client, payload):
     try:
         response = client.invoke(
-            FunctionName = "query_handler",
+            FunctionName = 'query_handler',
             InvocationType='RequestResponse',
-            Payload=json.dumps({"Key": "doctor="+dct['doctor']+"&id="+dct['id']+"&query="+functionName})
+            Payload=payload
         )
-        return response['Payload'].read()
-
+        return response['Payload'].read()[1:-1]
+        
     except Exception as e:
-        print(e)
-        return "No query type found"
+        return "Error retrieving data"

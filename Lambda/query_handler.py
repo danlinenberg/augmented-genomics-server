@@ -31,15 +31,14 @@ def lambda_handler(event, context):
         Payload=json.dumps({"Key": id, "doctor": doctor, "request": 1 })
     )
     access = access_response['Payload'].read()    
-    print(access)
+    
     try:
         response = client.invoke(
             FunctionName=query,
             InvocationType='RequestResponse',
             Payload=json.dumps({"Key": id, "access": access})
         )
-        return response['Payload'].read()
+        return response['Payload'].read()[1:-1]
     
     except Exception as e:
-        print(e)
-        return "Failure"
+            return "Failure"
