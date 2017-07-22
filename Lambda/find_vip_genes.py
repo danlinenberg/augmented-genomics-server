@@ -46,7 +46,7 @@ def lambda_handler(event, context):
 
     print(dict_similar)
     for key,value in dict_similar.iteritems():
-        if b_any(drug in x for x in value) or b_any(x in drug for x in value):
+        if b_any(str(drug).lower() in x for x in str(value).lower()) or b_any(x in str(drug).lower() for x in str(value).lower()):
             return key
     
     return False
