@@ -33,7 +33,7 @@ def lambda_handler(event, context):
     vcf_exist = client.invoke(
         FunctionName = 'is_vcf_exist',
         InvocationType='RequestResponse',
-        Payload=json.dumps({"Key": id})
+        Payload=json.dumps({"Key": str(id)})
     )
     if("false" in vcf_exist['Payload'].read()):
         return "No VCF data for this patient"
