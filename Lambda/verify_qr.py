@@ -28,6 +28,16 @@ def lambda_handler(event, context):
         except Exception as e:
             pass
     
+    id= int(dct["id"])
+    #check if vcf exist
+    vcf_exist = client.invoke(
+        FunctionName = 'is_vcf_exist',
+        InvocationType='RequestResponse',
+        Payload=json.dumps({"Key": id})
+    )
+    if("false" in vcf_exist['Payload'].read()):
+        return "No VCF data for this patient"
+    
     doctor = dct['doctor']
     is_super_doctor = client.invoke(
         FunctionName = 'access_control_handler',
@@ -43,7 +53,7 @@ def lambda_handler(event, context):
     try:
         response_patient = table_patient.get_item(
             Key={
-                'id': int(dct["id"])
+                'id': id
             }
         )
         item_patient = response_patient['Item']
