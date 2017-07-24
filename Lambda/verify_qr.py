@@ -80,7 +80,7 @@ def get_vcf(client, payload):
             InvocationType='RequestResponse',
             Payload=payload
         )
-        return response['Payload'].read()[1:-1]
+        return response['Payload'].read()[3:-3]
         
     except Exception as e:
         return "Error retrieving data"

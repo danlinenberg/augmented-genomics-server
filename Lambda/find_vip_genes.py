@@ -10,7 +10,6 @@ def lambda_handler(event, context):
     
     id = str(event['id'])
     drug = str(event['Key'])
-
     dynamodb = boto3.resource('dynamodb')
     table_vcf = dynamodb.Table("VCF")
     table_vip = dynamodb.Table("GenesVIP")
@@ -27,7 +26,7 @@ def lambda_handler(event, context):
     lst_vcf = []
     for i in response_vcf['Items']:
         lst_vcf.append(i["Gene.refGene"])
-        
+
     pe_vip = "#drugs, #gen"
     ean_vip = { "#drugs" : "drugs", "#gen" : "Gene.refGene" }
     response_vip = table_vip.scan(
@@ -47,8 +46,8 @@ def lambda_handler(event, context):
 
     print(dict_similar)
     for key,value in dict_similar.iteritems():
-        for word in drug.split():
-            if b_any(str(word).lower() in x for x in str(value).lower()) or b_any(x in str(word).lower() for x in str(value).lower()):
+        for word in drug:
+            if((str(word).lower() in str(value).lower()) or (str(value).lower() in str(word).lower())):
                 return key
     
     return False

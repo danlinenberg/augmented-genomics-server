@@ -23,6 +23,8 @@ def lambda_handler(event, context):
 
     id = dct['id']
     query = dct['query']
+    if("clear" in str(query).lower()):
+        query="query_naive_all"
     doctor = int(dct['doctor'])
         
     access_response = client.invoke(
