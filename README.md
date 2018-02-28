@@ -75,6 +75,5 @@ Password for all users is 12345678
 | 3028584100 | Treater | 3 |
 | 2041461610 | Treater | 2 |
 | 3028707530 | Treater | 1 |
-| 3028707530 | Treater | 1 |
 | 12345678   | Treater | 0 |
 
