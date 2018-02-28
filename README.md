@@ -56,3 +56,25 @@ Create an AWS account and follow these instructions:
 | query_naive_all | returns data for 1000genom for all superpopulations|
 | query_naive_afr | returns data for 1000genom for africa|
 | query_naive_eur | returns data for 1000genom for europe|
+
+
+### Users
+
+Password for all users is 12345678
+
+- 3 -> Full permissions without user's consent
+- 2 -> Full permissions with user's consent
+- 1 -> Limited permissions with user's consent
+- 0 -> No permissions, read only
+
+| ID | Role | Permission Level |
+| ------ | ------ | ------ |
+| 204146161 | Patient | - |
+| 302870753 | Patient | - |
+| 302858410 | Patient | - |
+| 3028584100 | Treater | 3 |
+| 2041461610 | Treater | 2 |
+| 3028707530 | Treater | 1 |
+| 3028707530 | Treater | 1 |
+| 12345678   | Treater | 0 |
+
